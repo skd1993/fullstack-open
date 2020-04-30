@@ -21,20 +21,38 @@ const App = () => {
     });
   };
 
-  const Stats = () => {
+  const Statistic = (props) => {
+    if (props.text === 'positive') {
+      return (
+        <p>
+          {props.text} {props.value} %
+        </p>
+      );
+    }
+    return (
+      <p>
+        {props.text} {props.value}
+      </p>
+    );
+  };
+
+  const Statistics = () => {
     const { good, neutral, bad } = feedback;
     const all = good + neutral + bad;
     const average = all / 3;
     const positive = (good / all) * 100 || 0;
 
+    if (all === 0) {
+      return <Statistic text='No feedback given' />
+    }
     return (
       <div>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {all}</p>
-        <p>average {average}</p>
-        <p>positive {positive} %</p>
+        <Statistic text='good' value={good} />
+        <Statistic text='neutral' value={neutral} />
+        <Statistic text='bad' value={bad} />
+        <Statistic text='all' value={all} />
+        <Statistic text='average' value={average} />
+        <Statistic text='positive' value={positive} />
       </div>
     );
   };
@@ -46,7 +64,7 @@ const App = () => {
       <Button title='neutral' onClick={addFeedback('neutral')} />
       <Button title='bad' onClick={addFeedback('bad')} />
       <Header title='statistics' />
-      <Stats />
+      <Statistics />
     </div>
   );
 };
