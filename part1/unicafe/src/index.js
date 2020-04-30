@@ -24,15 +24,17 @@ const App = () => {
   const Statistic = (props) => {
     if (props.text === 'positive') {
       return (
-        <p>
-          {props.text} {props.value} %
-        </p>
+        <tr>
+          <td>{props.text}</td>
+          <td>{props.value} %</td>
+        </tr>
       );
     }
     return (
-      <p>
-        {props.text} {props.value}
-      </p>
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr>
     );
   };
 
