@@ -5,16 +5,23 @@ const Button = (props) => {
   return <button onClick={props.onClick}>{props.title}</button>;
 };
 
+const Anecdote = (props) => {
+  return (
+    <div>
+      <p>{props.anecdote}</p>
+      <p>has {props.points} votes</p>
+    </div>
+  );
+};
+
 const App = (props) => {
+  const p = Array.apply(null, new Array(props.anecdotes.length)).map(
+    Number.prototype.valueOf,
+    0
+  );
+
   const [selected, setSelected] = useState(0);
-  const [points, setPoints] = useState({
-    0: 0,
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-  });
+  const [points, setPoints] = useState(p);
 
   const genRandom = (len) => {
     return Math.floor(Math.random() * 10) % len;
@@ -25,21 +32,42 @@ const App = (props) => {
   };
 
   const voteFor = (selected) => () => {
-    setPoints({
-      ...points,
-      [selected]: points[selected]+1
-    })
+    const copy = [...points];
+    copy[selected] += 1;
+    setPoints(copy);
+  };
+
+  function getMax(arr) {
+    let p = arr[0];
+    let i = arr.length;
+
+    while (i--) {
+      if (arr[i] > p) {
+        p = arr[i];
+      }
+    }
+    return p;
   }
 
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <p>has {points[selected]} votes</p>
+      <h1>Anecdote of the day</h1>
+      <Anecdote
+        anecdote={props.anecdotes[selected]}
+        points={points[selected]}
+      />
       <Button title='vote' onClick={voteFor(selected)} />
       <Button
         title='next anecdote'
         onClick={getAnecdote(props.anecdotes.length)}
       />
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <Anecdote
+          anecdote={props.anecdotes[points.indexOf(getMax(points))]}
+          points={getMax(points)}
+        />
+      </div>
     </div>
   );
 };
