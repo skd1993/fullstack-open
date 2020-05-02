@@ -4,11 +4,25 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]);
   const [newName, setNewName] = useState('');
 
+  const hasName = (n) => {
+    let i = null;
+    for (i = 0; i < persons.length; i++) {
+      if (persons[i].name === n) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const toBeAdded = { name: newName };
-    const addPerson = persons.concat(toBeAdded);
-    setPersons(addPerson);
+    if (hasName(newName) === false) {
+      const toBeAdded = { name: newName };
+      const addPerson = persons.concat(toBeAdded);
+      setPersons(addPerson);
+    } else {
+      alert(newName + ' is already added to phonebook');
+    }
   };
 
   const handleChange = (event) => {
@@ -17,7 +31,6 @@ const App = () => {
 
   return (
     <div>
-      <div>debug: {newName}</div>
       <h2>Phonebook</h2>
       <form onSubmit={handleSubmit}>
         <div>
