@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Country from './components/Country';
 
-function App() {
+const App = () => {
+  const [countries, setCountries] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+
+  useEffect(() => {
+    axios.get('https://restcountries.eu/rest/v2/all').then((response) => {
+      console.log(response.data);
+      setCountries(response.data);
+    });
+  }, []);
+
+  const setCountryFilter = (event) => {
+    const toFind = event.target.value.toLowerCase();
+    const res = countries.filter(
+      (f) => f.name.toLowerCase().indexOf(toFind) > -1
+    );
+    console.log(res);
+    setFiltered(res);
+  };
+
+  let showFiltered = null;
+  let l = filtered.length;
+  if (l > 10) {
+    showFiltered = <p>Too many matches, specify another filter</p>;
+  } else if (l === 1) {
+    const c = filtered[0];
+    showFiltered = <Country country={c} />;
+  } else {
+    const x = filtered.map((c) => {
+      return (
+        <div key={c.alpha2Code}>
+          <p>
+            {c.name}
+            <button onClick={() => setFiltered([c])}>show</button>
+          </p>
+        </div>
+      );
+    });
+    console.log(x);
+    showFiltered = x;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      find countries
+      <input onChange={setCountryFilter} />
+      {filtered.length > 0 && showFiltered}
     </div>
   );
-}
+};
 
 export default App;
