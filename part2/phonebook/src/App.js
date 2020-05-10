@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import server from './services/server';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [personsFiltered, setPersonsFiltered] = useState(persons);
   const [newName, setNewName] = useState({ name: '', number: '' });
+  const [filterVal, setFilterVal] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      console.log(response.data);
-      setPersons(response.data);
-      setPersonsFiltered(response.data);
+    server.getAll().then((personsData) => {
+      console.log(personsData);
+      setPersons(personsData);
     });
   }, []);
 
@@ -28,9 +27,13 @@ const App = () => {
     }
 
     if (flag === false) {
-      const toBeAdded = { name: newName.name, number: newName.number };
-      const addPerson = persons.concat(toBeAdded);
-      setPersons(addPerson);
+      const idx = persons[persons.length - 1].id + 1;
+      const toBeAdded = { name: newName.name, number: newName.number, id: idx };
+      server.create(toBeAdded).then((response) => {
+        const addPerson = persons.concat(toBeAdded);
+        setPersons(addPerson);
+        console.log(response);
+      });
     } else {
       alert(newName.name + ' is already added to phonebook');
     }
@@ -44,17 +47,13 @@ const App = () => {
   };
 
   const filterChange = (event) => {
-    const f = persons.filter(
-      (p) => p.name.toLowerCase().indexOf(event.target.value) > -1
-    );
-    console.log(f);
-    setPersonsFiltered(f);
+    setFilterVal(event.target.value);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter onChange={filterChange} />
+      <Filter value={filterVal} onChange={filterChange} />
       <h3>Add a new</h3>
       <PersonForm
         name={newName.name}
@@ -63,7 +62,7 @@ const App = () => {
         onSubmit={handleSubmit}
       />
       <h3>Numbers</h3>
-      <Persons persons={personsFiltered} />
+      <Persons persons={persons} toFilter={filterVal} />
     </div>
   );
 };

@@ -1,9 +1,17 @@
 import React from 'react';
 
-const Persons = (props) => {
+const Persons = ({ persons, toFilter }) => {
+  let filteredPersons = persons;
+
+  if (toFilter.length > 0) {
+    filteredPersons = persons.filter(
+      (p) => p.name.toLowerCase().indexOf(toFilter) > -1
+    );
+  }
+
   return (
     <div>
-      {props.persons.map((x) => (
+      {filteredPersons.map((x) => (
         <p key={x.name}>
           {x.name} {x.number}
         </p>
