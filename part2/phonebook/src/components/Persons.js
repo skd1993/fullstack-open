@@ -1,19 +1,13 @@
 import React from 'react';
 
-const Persons = ({ persons, toFilter }) => {
-  let filteredPersons = persons;
-
-  if (toFilter.length > 0) {
-    filteredPersons = persons.filter(
-      (p) => p.name.toLowerCase().indexOf(toFilter) > -1
-    );
-  }
+const Persons = ({ persons, onDelete }) => {
 
   return (
     <div>
-      {filteredPersons.map((x) => (
+      {persons.map((x) => (
         <p key={x.name}>
           {x.name} {x.number}
+          <button onClick={() => onDelete(x)}>delete</button>
         </p>
       ))}
     </div>

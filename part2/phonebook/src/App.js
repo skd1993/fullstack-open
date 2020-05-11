@@ -11,31 +11,46 @@ const App = () => {
 
   useEffect(() => {
     server.getAll().then((personsData) => {
-      console.log(personsData);
       setPersons(personsData);
     });
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let flag = false;
-    let i = null;
-    for (i = 0; i < persons.length; i++) {
-      if (persons[i].name.toLowerCase() === newName.name.toLowerCase()) {
-        flag = true;
+    let idx = persons.length === 0 ? 1 : persons[persons.length - 1].id + 1;
+    const isExisting = persons.findIndex(
+      (p) => p.name.toLowerCase() === newName.name.toLowerCase()
+    );
+    if (isExisting > -1) {
+      if (
+        window.confirm(
+          `${persons[isExisting].name} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        server
+          .update(persons[isExisting].id, {
+            ...persons[isExisting],
+            number: newName.number,
+          })
+          .then((response) => {
+            const newPersons = [...persons];
+            newPersons[isExisting].number = newName.number;
+            setPersons(newPersons);
+          })
+          .catch((err) => console.log(err));
       }
-    }
-
-    if (flag === false) {
-      const idx = persons[persons.length - 1].id + 1;
-      const toBeAdded = { name: newName.name, number: newName.number, id: idx };
-      server.create(toBeAdded).then((response) => {
-        const addPerson = persons.concat(toBeAdded);
-        setPersons(addPerson);
-        console.log(response);
-      });
     } else {
-      alert(newName.name + ' is already added to phonebook');
+      server
+        .create({ name: newName.name, number: newName.number, id: idx })
+        .then((response) => {
+          setPersons(
+            persons.concat({
+              name: newName.name,
+              number: newName.number,
+              id: idx,
+            })
+          );
+        });
     }
   };
 
@@ -47,13 +62,23 @@ const App = () => {
   };
 
   const filterChange = (event) => {
-    setFilterVal(event.target.value);
+    const toFilter = event.target.value;
+    setFilterVal(toFilter);
+  };
+
+  const confirmDelete = (x) => {
+    const res = window.confirm(`Delete ${x.name}?`);
+    if (res === true) {
+      server.remove(x.id);
+      const f = persons.filter((p) => p.id !== x.id);
+      setPersons(f);
+    }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter value={filterVal} onChange={filterChange} />
+      <Filter onChange={filterChange} />
       <h3>Add a new</h3>
       <PersonForm
         name={newName.name}
@@ -62,7 +87,12 @@ const App = () => {
         onSubmit={handleSubmit}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} toFilter={filterVal} />
+      <Persons
+        persons={persons.filter(
+          (p) => p.name.toLowerCase().indexOf(filterVal) > -1
+        )}
+        onDelete={confirmDelete}
+      />
     </div>
   );
 };
