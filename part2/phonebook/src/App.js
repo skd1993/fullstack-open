@@ -4,10 +4,31 @@ import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import server from './services/server';
 
+const Notification = (props) => {
+  if(props.msg === null) {
+    return null;
+  }
+  const type = props.msg.startsWith('The') ? 'red' : 'green';
+  const notificationStyle = {
+    color: type,
+    backgroundColor: '#D3D3D3',
+    width: '100%',
+    fontSize: 20,
+    border: `2px solid ${type}`,
+    borderRadius: 5
+  }
+  return (
+    <div style={notificationStyle}>
+      <p>{props.msg}</p>
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState({ name: '', number: '' });
   const [filterVal, setFilterVal] = useState('');
+  const [statusMsg, setStatusMsg] = useState(null);
 
   useEffect(() => {
     server.getAll().then((personsData) => {
@@ -36,6 +57,10 @@ const App = () => {
             const newPersons = [...persons];
             newPersons[isExisting].number = newName.number;
             setPersons(newPersons);
+            setStatusMsg(`Added ${newName.name}`);
+            setTimeout(() => { 
+              setStatusMsg(null);
+            }, 3000);
           })
           .catch((err) => console.log(err));
       }
@@ -50,6 +75,10 @@ const App = () => {
               id: idx,
             })
           );
+          setStatusMsg(`Added ${newName.name}`);
+          setTimeout(() => { 
+            setStatusMsg(null);
+          }, 3000);
         });
     }
   };
@@ -69,15 +98,24 @@ const App = () => {
   const confirmDelete = (x) => {
     const res = window.confirm(`Delete ${x.name}?`);
     if (res === true) {
-      server.remove(x.id);
-      const f = persons.filter((p) => p.id !== x.id);
-      setPersons(f);
+      server.remove(x.id).then(response => {
+        const f = persons.filter((p) => p.id !== x.id);
+        setPersons(f);
+      })
+      .catch (err => {
+        console.log(err);
+        setStatusMsg(`The information of ${x.name} has already been removed from the server`);
+        setTimeout(() => { 
+          setStatusMsg(null);
+        }, 3000)
+      });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification msg={statusMsg}/>
       <Filter onChange={filterChange} />
       <h3>Add a new</h3>
       <PersonForm
