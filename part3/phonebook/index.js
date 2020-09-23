@@ -1,7 +1,14 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 
 app.use(express.json());
+
+morgan.token('host', function (req, res) {
+  return req.hostname;
+});
+
+app.use(morgan('tiny'));
 
 let persons = [
   {
