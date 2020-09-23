@@ -1,0 +1,27 @@
+{
+  "name": "phonebook",
+  "version": "1.0.0",
+  "description": "full-stack-open part 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skd1993/fullstack-open.git"
+  },
+  "author": "Shobhit Kumar Deepanker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skd1993/fullstack-open/issues"
+  },
+  "homepage": "https://github.com/skd1993/fullstack-open#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
