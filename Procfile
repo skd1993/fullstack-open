@@ -1,0 +1,1 @@
+web: cd part3/phonebook && npm start
