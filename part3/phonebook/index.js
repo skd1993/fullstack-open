@@ -1,7 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+
 const app = express();
+const Persons = require('./models/person');
 
 app.use(cors());
 app.use(express.json());
@@ -52,7 +55,19 @@ let persons = [
 ];
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  // res.json(persons);
+  Persons.find({})
+    .then((persons) => {
+      if (persons) {
+        console.log('all good======', persons);
+        res.json(persons);
+      } else {
+        console.log('Persons do not exist');
+      }
+    })
+    .catch((error) => {
+      console.log('Some error occurred in fetching', error.message);
+    });
 });
 
 app.get('/info', (req, res) => {
@@ -63,12 +78,15 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
   let id = Number(req.params.id);
-  const result = persons.find((person) => id === person.id);
-  if (result) {
-    res.json(result);
-  } else {
-    res.status(400).send('Nothing found, error 400').end();
-  }
+  // const result = persons.find((person) => id === person.id);
+  // if (result) {
+  //   res.json(result);
+  // } else {
+  //   res.status(400).send('Nothing found, error 400').end();
+  // }
+  Persons.findById(req.param.id).then((person) => {
+    res.json(person);
+  });
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -84,20 +102,29 @@ app.post('/api/persons', (req, res) => {
   if (!body.name || !body.number) {
     res.status(400).send('name or number cannot be empty').end();
   }
-  const duplicateName = persons
-    .map((person) => person.name)
-    .includes(body.name);
-  if (duplicateName) {
-    res.status(400).send({ error: 'name must be unique' }).end();
-  } else {
-    let new_id = Math.floor(Math.random() * 1000);
-    body.id = new_id;
-    persons = persons.concat(body);
-    res.json(persons);
-  }
+  // const duplicateName = persons
+  //   .map((person) => person.name)
+  //   .includes(body.name);
+  // if (duplicateName) {
+  //   res.status(400).send({ error: 'name must be unique' }).end();
+  // } else {
+  //   let new_id = Math.floor(Math.random() * 1000);
+  //   body.id = new_id;
+  //   persons = persons.concat(body);
+  //   res.json(persons);
+  // }
+  const person = new Persons({
+    name: body.name,
+    number: body.number,
+    id: Math.floor(Math.random() * 1000),
+  });
+
+  person.save().then((savedPerson) => {
+    res.json(savedPerson);
+  });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
