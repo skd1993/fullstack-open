@@ -5,7 +5,7 @@ import Persons from './components/Persons';
 import server from './services/server';
 
 const Notification = (props) => {
-  if(props.msg === null) {
+  if (props.msg === null) {
     return null;
   }
   const type = props.msg.startsWith('The') ? 'red' : 'green';
@@ -15,14 +15,14 @@ const Notification = (props) => {
     width: '100%',
     fontSize: 20,
     border: `2px solid ${type}`,
-    borderRadius: 5
-  }
+    borderRadius: 5,
+  };
   return (
     <div style={notificationStyle}>
       <p>{props.msg}</p>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -58,16 +58,22 @@ const App = () => {
             newPersons[isExisting].number = newName.number;
             setPersons(newPersons);
             setStatusMsg(`Added ${newName.name}`);
-            setTimeout(() => { 
+            setTimeout(() => {
               setStatusMsg(null);
             }, 3000);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err.response.data.message);
+            setTimeout(() => {
+              setStatusMsg(err.response.data.message);
+            }, 2000);
+          });
       }
     } else {
       server
         .create({ name: newName.name, number: newName.number, id: idx })
         .then((response) => {
+          console.log(response);
           setPersons(
             persons.concat({
               name: newName.name,
@@ -76,9 +82,15 @@ const App = () => {
             })
           );
           setStatusMsg(`Added ${newName.name}`);
-          setTimeout(() => { 
+          setTimeout(() => {
             setStatusMsg(null);
           }, 3000);
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          setTimeout(() => {
+            setStatusMsg(err.response.data.message);
+          }, 2000);
         });
     }
   };
@@ -98,24 +110,28 @@ const App = () => {
   const confirmDelete = (x) => {
     const res = window.confirm(`Delete ${x.name}?`);
     if (res === true) {
-      server.remove(x.id).then(response => {
-        const f = persons.filter((p) => p.id !== x.id);
-        setPersons(f);
-      })
-      .catch (err => {
-        console.log(err);
-        setStatusMsg(`The information of ${x.name} has already been removed from the server`);
-        setTimeout(() => { 
-          setStatusMsg(null);
-        }, 3000)
-      });
+      server
+        .remove(x.id)
+        .then((response) => {
+          const f = persons.filter((p) => p.id !== x.id);
+          setPersons(f);
+        })
+        .catch((err) => {
+          console.log(err);
+          setStatusMsg(
+            `The information of ${x.name} has already been removed from the server`
+          );
+          setTimeout(() => {
+            setStatusMsg(null);
+          }, 3000);
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification msg={statusMsg}/>
+      <Notification msg={statusMsg} />
       <Filter onChange={filterChange} />
       <h3>Add a new</h3>
       <PersonForm

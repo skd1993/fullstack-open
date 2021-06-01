@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
+
 require('dotenv').config();
 // if (process.argv.length < 5) {
 //   console.log('please provide all arguments');
@@ -23,6 +25,8 @@ const personSchema = new mongoose.Schema({
   number: String,
   id: Number,
 });
+
+personSchema.plugin(uniqueValidator);
 
 const Person = mongoose.model('Persons', personSchema);
 
