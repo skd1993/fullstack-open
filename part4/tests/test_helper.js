@@ -1,16 +1,28 @@
 const Blog = require('../models/blog');
+const User = require('../models/user');
+const mongoose = require('mongoose');
 
 const initBlogs = [
-  { title: 'test blog 1', author: 'SKD', url: 'url1@skd.com', likes: 10 },
-  { title: 'test blog 2', author: 'SKD', url: 'url2@skd.com', likes: 20 },
+  {
+    likes: 21,
+    title: 'Test Blog A',
+    author: 'Test user A (testuserA)',
+    url: 'test@test.com',
+    user: mongoose.Types.ObjectId('578df3efb618f5141202a196'),
+  },
+  {
+    likes: 31,
+    title: 'Test Blog B',
+    author: 'Test user B (testuserB)',
+    url: 'test@test.com',
+    user: mongoose.Types.ObjectId('578df3efb618f5141202a197'),
+  },
 ];
 
 const nonExistingId = async () => {
   const blog = new Blog({
-    title: 'test blog 69',
-    author: 'SKD',
-    url: 'url69@skd.com',
-    likes: 69,
+    title: 'Test Blog 0',
+    url: 'url69@test.com',
   });
   await blog.save();
   await blog.remove();
@@ -22,8 +34,14 @@ const blogsInDb = async () => {
   return blogs.map((blog) => blog.toJSON());
 };
 
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((user) => user.toJSON());
+};
+
 module.exports = {
   initBlogs,
   nonExistingId,
   blogsInDb,
+  usersInDb,
 };
