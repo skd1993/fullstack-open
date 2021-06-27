@@ -19,5 +19,16 @@ const submitBlog = async (blogObj) => {
 	return response.data
 }
 
+const incrementLikes = async (blogId, likesObj) => {
+	const response = await axios.put(`${baseUrl}/${blogId}`, likesObj)
+	return response.data
+}
+
+const deleteBlog = async (blogId) => {
+	const config = {headers: {Authorization: token}}
+	const response = await axios.delete(`${baseUrl}/${blogId}`, config)
+	return response.data
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default {getAll, setToken, submitBlog}
+export default {getAll, setToken, submitBlog, incrementLikes, deleteBlog}

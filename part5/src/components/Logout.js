@@ -1,19 +1,13 @@
 import React from "react";
 
-const Logout = ({setUser, setNotification}) => {
+const Logout = ({setUser, notificationHandler}) => {
 	const logout = () => {
 		try {
 			window.localStorage.setItem('loggedInUser', null)
 			setUser(null)
-			setNotification('Logged out user successfully')
-			setTimeout(() => {
-				setNotification(null)
-			}, 2500)
+			notificationHandler('Logged out user successfully')
 		} catch (error) {
-			setNotification('Some error occurred')
-			setTimeout(() => {
-				setNotification(null)
-			}, 2500)
+			notificationHandler('Some error occurred')
 			console.log("Log out error", error)
 		}
 	}

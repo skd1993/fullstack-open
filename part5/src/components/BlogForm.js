@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import blogService from '../services/blogs'
 
-const BlogForm = ({setNotification}) => {
+const BlogForm = ({notificationHandler, blogFormToggleRef, blogUpdateRef}) => {
 	const [title, setTitle] = useState('');
 	const [url, setUrl] = useState('');
+
+	const buttonName = "Create";
 
 	const changeHandler = (event) => {
 		const {value, name} = event.target;
@@ -15,18 +17,14 @@ const BlogForm = ({setNotification}) => {
 		event.preventDefault()
 		try {
 			await blogService.submitBlog({title, url})
-			setNotification(`Blog added successfully: ${title}`)
-			setTimeout(() => {
-				setNotification(null)
-			}, 2500)
+			notificationHandler(`Blog added successfully: ${title}`)
 			setUrl('')
 			setTitle('')
+			await blogUpdateRef.current.blogUpdateHandler();
+			blogFormToggleRef.current.visibilityHandler();
 		} catch (e) {
 			console.log('Blog cannot be added', e)
-			setNotification(e.response.data.error)
-			setTimeout(() => {
-				setNotification(null)
-			}, 2500)
+			notificationHandler(e.response.data.error)
 		}
 	}
 
@@ -40,7 +38,7 @@ const BlogForm = ({setNotification}) => {
 				<div><label htmlFor={"url"}>URL: </label>
 					<input type={"text"} name={"url"} placeholder={"url of blog post"} onChange={changeHandler} value={url}/>
 				</div>
-				<button type={"submit"}>create</button>
+				<button type={"submit"}>{buttonName}</button>
 			</form>
 		</div>
 	)

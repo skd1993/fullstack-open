@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import loginService from '../services/login'
+import {loginService} from '../services/login'
 import blogService from '../services/blogs'
 
-const Login = ({setUser, setNotification}) => {
+const Login = ({setUser, notificationHandler}) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-
 
 	const onChange = (event) => {
 		event.target.name === 'username' ? setUsername(event.target.value) : setPassword(event.target.value)
@@ -14,11 +13,8 @@ const Login = ({setUser, setNotification}) => {
 	const handleLogin = async (event) => {
 		event.preventDefault()
 		try {
-			const response = await loginService.login({username, password})
-			setNotification("Logged in successfully")
-			setTimeout(() => {
-				setNotification(null)
-			}, 2500)
+			const response = await loginService({username, password})
+			notificationHandler("Logged in successfully")
 			console.log("Logged in", response);
 			setUser(response)
 			blogService.setToken(response.token)
@@ -26,10 +22,7 @@ const Login = ({setUser, setNotification}) => {
 			setUsername('')
 			window.localStorage.setItem('loggedInUser', JSON.stringify(response))
 		} catch (error) {
-			setNotification(error.response.data.error);
-			setTimeout(() => {
-				setNotification(null)
-			}, 2500)
+			notificationHandler(error.response.data.error);
 		}
 	}
 	return (
