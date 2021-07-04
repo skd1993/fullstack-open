@@ -1,34 +1,34 @@
-import React, {useState, useImperativeHandle} from 'react'
+import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 
 const Togglable = React.forwardRef((props, ref) => {
-	const [visibility, setVisibility] = useState(false);
+  const [visibility, setVisibility] = useState(false)
 
-	const visibilityHandler = () => {
-		setVisibility(prevState => !prevState);
-	}
+  const visibilityHandler = () => {
+    setVisibility(prevState => !prevState)
+  }
 
-	useImperativeHandle(ref, () => {
-		return {visibilityHandler}
-	})
+  useImperativeHandle(ref, () => {
+    return { visibilityHandler }
+  })
 
-	return (
-		<div>
-			<button onClick={visibilityHandler} style={{display: visibility ? 'none' : ''}}>{props.buttonName}</button>
-			<div style={{display: visibility ? '' : 'none'}}>
-				{props.children}
-				<button onClick={visibilityHandler}>{props.cancelButtonName}</button>
-			</div>
-		</div>
-	)
+  return (
+    <div>
+      <button onClick={visibilityHandler} style={{ display: visibility ? 'none' : '' }}>{props.buttonName}</button>
+      <div style={{ display: visibility ? '' : 'none' }} className={'togglable'}>
+        {props.children}
+        <button onClick={visibilityHandler}>{props.cancelButtonName}</button>
+      </div>
+    </div>
+  )
 })
 
 Togglable.propTypes = {
-	buttonName
-:
+  buttonName
+  :
 PropTypes.string.isRequired,
-	cancelButtonName
-:
+  cancelButtonName
+  :
 PropTypes.string.isRequired
 }
 

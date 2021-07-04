@@ -34,9 +34,9 @@ const BlogForm = ({notificationHandler, blogFormToggleRef, blogUpdateRef}) => {
 				<h1>Create new blog</h1>
 				<div><label htmlFor={"title"}>Title: </label>
 					<input type={"text"} name={"title"} placeholder={"title of blog post"} onChange={changeHandler}
-					       value={title}/></div>
+					       value={title} id={'title'} /></div>
 				<div><label htmlFor={"url"}>URL: </label>
-					<input type={"text"} name={"url"} placeholder={"url of blog post"} onChange={changeHandler} value={url}/>
+					<input type={"text"} name={"url"} placeholder={"url of blog post"} onChange={changeHandler} value={url} id={'url'} />
 				</div>
 				<button type={"submit"}>{buttonName}</button>
 			</form>

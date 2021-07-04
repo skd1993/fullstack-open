@@ -1,15 +1,15 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react'
 
-import Blog from './components/Blog';
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import Notification from "./components/Notification";
-import BlogForm from "./components/BlogForm";
-import Togglable from "./components/Togglable";
+import Blog from './components/Blog'
+import Login from './components/Login'
+import Logout from './components/Logout'
+import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
 	const [user, setUser] = useState(null)
-	const [notification, setNotification] = useState(null);
+	const [notification, setNotification] = useState(null)
 
 	const blogFormToggleRef = useRef(null)
 	const blogListRef = useRef(null)
@@ -40,7 +40,7 @@ const App = () => {
 					<div><h1>Blogs</h1>
 						<div><p>{user.name} logged in</p><Logout setUser={setUser} notificationHandler={notificationHandler}/></div>
 						<br/>
-						<Togglable buttonName={"Create new Blog"} cancelButtonName={"Cancel"} ref={blogFormToggleRef}>
+						<Togglable buttonName={'Create new Blog'} cancelButtonName={'Cancel'} ref={blogFormToggleRef}>
 							<BlogForm
 								notificationHandler={notificationHandler} blogFormToggleRef={blogFormToggleRef}
 								blogUpdateRef={blogListRef}
