@@ -48,12 +48,13 @@ const Blog = React.forwardRef(({ notificationHandler }, ref) => {
   };
 
   return (
-    <div>
+    <div id='blog-list'>
       {
         blogs
           .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
+          .map((blog, index) => (
             <BlogContent
+              index={index}
               blog={blog}
               likesIncrementHandler={likesIncrementHandler}
               removeBlogHandler={removeBlogHandler}

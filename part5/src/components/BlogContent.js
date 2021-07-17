@@ -1,7 +1,12 @@
 import React from 'react';
 import Togglable from './Togglable';
 
-const BlogContent = ({ blog, likesIncrementHandler, removeBlogHandler }) => {
+const BlogContent = ({
+  blog,
+  likesIncrementHandler,
+  removeBlogHandler,
+  index,
+}) => {
   return (
     <div key={blog.id} style={{ border: '1px solid black', padding: '10px' }}>
       <div className={'blogTitle'}>
@@ -13,13 +18,18 @@ const BlogContent = ({ blog, likesIncrementHandler, removeBlogHandler }) => {
       <Togglable buttonName={'View'} cancelButtonName={'Hide'}>
         <div className={'blogDetails'}>
           <p>URL: {blog.url}</p>
-          <div>
+          <div id={`like-div-${index + 1}`}>
             <span>Likes: {blog.likes} </span>
-            <button onClick={() => likesIncrementHandler(blog.id, blog.likes)}>
+            <button
+              id={`like-button-${index + 1}`}
+              onClick={() => likesIncrementHandler(blog.id, blog.likes)}
+            >
               Like
             </button>
           </div>
-          <button onClick={() => removeBlogHandler(blog)}>Remove</button>
+          <button id='remove-button' onClick={() => removeBlogHandler(blog)}>
+            Remove
+          </button>
         </div>
       </Togglable>
     </div>

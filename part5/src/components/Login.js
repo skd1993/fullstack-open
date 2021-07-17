@@ -30,15 +30,15 @@ const Login = ({setUser, notificationHandler}) => {
 			<h1>Login to application</h1>
 			<form onSubmit={handleLogin}>
 				<div><label htmlFor="username">Username: </label>
-					<input type="text" name={"username"} placeholder={"Enter username here"} value={username}
+					<input id="username" type="text" name={"username"} placeholder={"Enter username here"} value={username}
 					       onChange={onChange}/>
 				</div>
 				<div>
 					<label htmlFor="password">Password: </label>
-					<input type="password" name={"password"} placeholder={"Enter password here"} value={password}
+					<input id="password" type="password" name={"password"} placeholder={"Enter password here"} value={password}
 					       onChange={onChange}/>
 				</div>
-				<button type="submit">Login</button>
+				<button type="submit" id="submit">Login</button>
 			</form>
 		</div>
 	)
