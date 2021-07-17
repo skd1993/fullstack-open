@@ -21,3 +21,7 @@ https://github.com/skd1993/fullstack-open/tree/master/part3/phonebook
 ## Part 4
 
 https://github.com/skd1993/fullstack-open/tree/master/part4
+
+## Part 5
+
+https://github.com/skd1993/fullstack-open/tree/master/part5
