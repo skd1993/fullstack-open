@@ -16,16 +16,16 @@ https://github.com/skd1993/fullstack-open/commits/master/part2
 
 ## Part 3
 
-https://github.com/skd1993/fullstack-open/tree/master/part3/phonebook
+https://github.com/skd1993/fullstack-open/commits/master/part3
 
 ## Part 4
 
-https://github.com/skd1993/fullstack-open/tree/master/part4
+https://github.com/skd1993/fullstack-open/commits/master/part4
 
 ## Part 5
 
-https://github.com/skd1993/fullstack-open/tree/master/part5
+https://github.com/skd1993/fullstack-open/commits/master/part5
 
 ## Part 6
 
-https://github.com/skd1993/fullstack-open/tree/master/part6
+https://github.com/skd1993/fullstack-open/commits/master/part6
