@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { giveVote, showNotification } from '../redux/actions/actions';
+import { addVote } from '../redux/actions/actions';
 
 const AnecdoteList = (props) => {
   const anecdotes = useSelector((state) => state.anecdotes);
@@ -9,8 +9,7 @@ const AnecdoteList = (props) => {
 
   const vote = (anecdote) => {
     console.log('vote', anecdote.id);
-    dispatch(giveVote(anecdote));
-    dispatch(showNotification(`You voted: "${anecdote.content}"`));
+    dispatch(addVote(anecdote));
   };
 
   const anecdotesToShow =

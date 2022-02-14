@@ -5,8 +5,6 @@ import { anecdotesAtStart } from './initialState';
 const initialState = anecdotesAtStart.map(asObject);
 
 const anecdoteReducer = (state = initialState, action) => {
-  console.log('state now: ', state);
-  console.log('action', action);
 
   switch (action.type) {
     case ACTIONS.VOTE:
@@ -14,6 +12,8 @@ const anecdoteReducer = (state = initialState, action) => {
       return [...filtered, action.data];
     case ACTIONS.CREATE:
       return [...state, action.data];
+    case ACTIONS.FETCH_ANECDOTES:
+      return action.data;
     default:
       return state;
   }

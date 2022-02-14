@@ -1,8 +1,6 @@
 import * as ACTIONS from '../actions/actionTypes';
 
 const notificationReducer = (state = '', action) => {
-  console.log('state now: ', state);
-  console.log('action', action);
 
   switch (action.type) {
     case ACTIONS.SHOW_NOTIFICATION:
