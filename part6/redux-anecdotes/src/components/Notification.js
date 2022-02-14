@@ -1,13 +1,16 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { hideNotification } from '../redux/actions/actions';
 
-const Notification = () => {
-  const notification = useSelector((state) => state.notification);
-  const dispatch = useDispatch();
+const Notification = (props) => {
+  // const notification = useSelector((state) => state.notification);
+  // const dispatch = useDispatch();
+  const notification = props.notification;
 
   const hideNotif = () => {
-    dispatch(hideNotification());
+    // dispatch(hideNotification());
+    props.hideNotification();
   };
 
   const style = {
@@ -15,7 +18,7 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1,
   };
-  
+
   return (
     notification.length > 0 && (
       <div onClick={hideNotif} style={style}>
@@ -25,4 +28,17 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+const mapStateToProps = (state) => {
+  return { notification: state.notification };
+};
+
+const mapDispatchToProps = {
+  hideNotification,
+};
+
+const CNotification = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Notification);
+
+export default CNotification;

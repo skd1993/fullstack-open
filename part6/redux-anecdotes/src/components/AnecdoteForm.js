@@ -1,15 +1,17 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { newAnecdote } from '../redux/actions/actions';
 
 const AnecdoteForm = (props) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const inpRef = useRef();
 
   const create = async (event) => {
     event.preventDefault();
     const toCreate = inpRef.current.value;
-    dispatch(newAnecdote(toCreate));
+    // dispatch(newAnecdote(toCreate));
+    props.newAnecdote(toCreate);
     inpRef.current.value = '';
   };
 
@@ -26,4 +28,8 @@ const AnecdoteForm = (props) => {
   );
 };
 
-export default AnecdoteForm;
+const mapDispatchToProps = { newAnecdote };
+
+const CAnecdoteForm = connect(null, mapDispatchToProps)(AnecdoteForm);
+
+export default CAnecdoteForm;

@@ -1,15 +1,20 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { addVote } from '../redux/actions/actions';
 
 const AnecdoteList = (props) => {
-  const anecdotes = useSelector((state) => state.anecdotes);
-  const filter = useSelector((state) => state.filter);
-  const dispatch = useDispatch();
+  // const anecdotes = useSelector((state) => state.anecdotes);
+  // const filter = useSelector((state) => state.filter);
+  // const dispatch = useDispatch();
+
+  const anecdotes = props.anecdotes;
+  const filter = props.filter;
 
   const vote = (anecdote) => {
     console.log('vote', anecdote.id);
-    dispatch(addVote(anecdote));
+    // dispatch(addVote(anecdote));
+    props.addVote(anecdote);
   };
 
   const anecdotesToShow =
@@ -42,4 +47,18 @@ const AnecdoteList = (props) => {
   );
 };
 
-export default AnecdoteList;
+const mapDispatchToProps = { addVote };
+
+const mapStateToProps = (state) => {
+  return {
+    filter: state.filter,
+    anecdotes: state.anecdotes,
+  };
+};
+
+const CAnecdoteList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList);
+
+export default CAnecdoteList;

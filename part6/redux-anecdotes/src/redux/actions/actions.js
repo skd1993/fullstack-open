@@ -1,6 +1,8 @@
 import * as ACTIONS from './actionTypes';
 import anecdotesService from '../../services/anecdotesService';
 
+let timer;
+
 export const getId = () => (100000 * Math.random()).toFixed(0);
 
 export const asObject = (anecdote) => {
@@ -56,9 +58,10 @@ export const hideNotification = () => {
 };
 
 const setNotification = (notification, t) => {
+  clearTimeout(timer);
   return (dispatch) => {
     dispatch(showNotification(notification));
-    setTimeout(() => {
+    timer = setTimeout(() => {
       dispatch(hideNotification());
     }, t * 1000);
   };
