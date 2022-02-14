@@ -10,6 +10,27 @@ export const asObject = (anecdote) => {
   };
 };
 
+export const setFilter = (filter) => {
+  return {
+    type: ACTIONS.FILTER,
+    data: filter
+  }
+}
+
+export const hideNotification = () => {
+  return {
+    type: ACTIONS.HIDE_NOTIFICATION,
+    data: '',
+  };
+};
+
+export const showNotification = (notification) => {
+  return {
+    type: ACTIONS.SHOW_NOTIFICATION,
+    data: notification,
+  };
+};
+
 export const createAnecdote = (anecdote) => {
   return {
     type: ACTIONS.CREATE,
