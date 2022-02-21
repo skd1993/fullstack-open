@@ -12,6 +12,8 @@ export const blogsReducer = (state = blogsInitialState, action) => {
       return state;
     case ACTIONS.DELETE_BLOG:
       return state;
+    case ACTIONS.UNLOAD_BLOGS:
+      return blogsInitialState;
     default:
       return state;
   }

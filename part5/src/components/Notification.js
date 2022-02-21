@@ -13,6 +13,7 @@ const Notification = () => {
           borderWidth: '5px',
           padding: '10px',
           backgroundColor: '#eee',
+          marginBottom: '10px'
         }}
       >
         <p>{notification}</p>

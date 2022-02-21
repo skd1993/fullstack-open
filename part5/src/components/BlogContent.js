@@ -1,9 +1,9 @@
 import React from 'react';
-import Togglable from './Togglable';
+import { Link } from 'react-router-dom';
+// import Togglable from './Togglable';
 
 const BlogContent = ({
   blog,
-  likesIncrementHandler,
   removeBlogHandler,
   index,
 }) => {
@@ -11,11 +11,11 @@ const BlogContent = ({
     <div key={blog.id} style={{ border: '1px solid black', padding: '10px' }}>
       <div className={'blogTitle'}>
         <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-          {blog.title}
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
         </span>{' '}
-        {blog.author}
+        <p>by {blog.author}</p>
       </div>
-      <Togglable buttonName={'View'} cancelButtonName={'Hide'}>
+      {/* <Togglable buttonName={'View'} cancelButtonName={'Hide'}>
         <div className={'blogDetails'}>
           <p>URL: {blog.url}</p>
           <div id={`like-div-${index + 1}`}>
@@ -31,7 +31,7 @@ const BlogContent = ({
             Remove
           </button>
         </div>
-      </Togglable>
+      </Togglable> */}
     </div>
   );
 };

@@ -39,6 +39,7 @@ export const logout = () => {
     try {
       window.localStorage.setItem('loggedInUser', null);
       dispatch(removeUser());
+      dispatch(unloadBlogs());
       dispatch(notificationHandler('Logged out user successfully'));
     } catch (error) {
       dispatch(notificationHandler('Some error occurred'));
@@ -134,6 +135,12 @@ const setBlogs = (blogs) => {
   return {
     type: ACTIONS.SET_BLOGS,
     payload: blogs,
+  };
+};
+
+const unloadBlogs = () => {
+  return {
+    type: ACTIONS.UNLOAD_BLOGS,
   };
 };
 

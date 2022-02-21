@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import BlogContent from './BlogContent';
 import { useDispatch, useSelector } from 'react-redux';
-import { showBlogs, like, deleteBlog } from '../redux/actions';
+import { showBlogs, deleteBlog } from '../redux/actions';
 
 const Blog = React.forwardRef((props, ref) => {
   // const [blogs, setBlogs] = useState([]);
@@ -11,10 +11,6 @@ const Blog = React.forwardRef((props, ref) => {
   useEffect(() => {
     dispatch(showBlogs());
   }, []);
-
-  const likesIncrementHandler = async (blogId, likes) => {
-    dispatch(like(blogId, likes));
-  };
 
   const removeBlogHandler = async (blog) => {
     dispatch(deleteBlog(blog));
@@ -29,7 +25,6 @@ const Blog = React.forwardRef((props, ref) => {
             <BlogContent
               index={index}
               blog={blog}
-              likesIncrementHandler={likesIncrementHandler}
               removeBlogHandler={removeBlogHandler}
             />
           ))

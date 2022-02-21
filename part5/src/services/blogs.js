@@ -13,6 +13,11 @@ const getAll = async () => {
   return response.data;
 };
 
+const getBlogInfo = async (id) => {
+  const response = await axios.get(baseUrl + '/' + id);
+  return response.data;
+};
+
 const submitBlog = async (blogObj) => {
   const config = {
     headers: {
@@ -43,4 +48,4 @@ const deleteBlog = async (blogId) => {
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, setToken, submitBlog, incrementLikes, deleteBlog };
+export default { getAll, getBlogInfo, setToken, submitBlog, incrementLikes, deleteBlog };
