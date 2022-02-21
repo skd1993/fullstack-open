@@ -1,53 +1,26 @@
-import React, { useEffect, useState, useImperativeHandle } from 'react';
-import blogService from '../services/blogs';
+import React, { useEffect } from 'react';
 import BlogContent from './BlogContent';
+import { useDispatch, useSelector } from 'react-redux';
+import { showBlogs, like, deleteBlog } from '../redux/actions';
 
-const Blog = React.forwardRef(({ notificationHandler }, ref) => {
-  const [blogs, setBlogs] = useState([]);
+const Blog = React.forwardRef((props, ref) => {
+  // const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
-    async function fetchData() {
-      await blogUpdateHandler();
-    }
-
-    fetchData();
+    dispatch(showBlogs());
   }, []);
 
-  const blogUpdateHandler = async () => {
-    const blogs = await blogService.getAll();
-    setBlogs(blogs);
-  };
-
-  useImperativeHandle(ref, () => {
-    return { blogUpdateHandler };
-  });
-
   const likesIncrementHandler = async (blogId, likes) => {
-    try {
-      const response = await blogService.incrementLikes(blogId, {
-        likes: likes + 1,
-      });
-      notificationHandler(response);
-      await blogUpdateHandler();
-    } catch (e) {
-      notificationHandler(e.response.data);
-    }
+    dispatch(like(blogId, likes));
   };
 
   const removeBlogHandler = async (blog) => {
-    try {
-      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-        const response = await blogService.deleteBlog(blog.id);
-        notificationHandler(response);
-        await blogUpdateHandler();
-      }
-    } catch (e) {
-      notificationHandler(e.response?.data.error);
-      console.log(e);
-    }
+    dispatch(deleteBlog(blog));
   };
 
-  return (
+  return blogs?.length > 0 ? (
     <div id='blog-list'>
       {
         blogs
@@ -74,6 +47,8 @@ const Blog = React.forwardRef(({ notificationHandler }, ref) => {
         // </div>)
       }
     </div>
+  ) : (
+    <p>No blogs found</p>
   );
 });
 

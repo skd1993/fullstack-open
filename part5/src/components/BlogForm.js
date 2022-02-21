@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+import { createBlog } from '../redux/actions';
 
-const BlogForm = ({
-  notificationHandler,
-  blogFormToggleRef,
-  blogUpdateRef,
-}) => {
+const BlogForm = ({ blogFormToggleRef, blogUpdateRef }) => {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+
+  const dispatch = useDispatch();
 
   const buttonName = 'Create';
 
@@ -19,17 +18,9 @@ const BlogForm = ({
 
   const blogSubmitHandler = async (event) => {
     event.preventDefault();
-    try {
-      await blogService.submitBlog({ title, url });
-      notificationHandler(`Blog added successfully: ${title}`);
-      setUrl('');
-      setTitle('');
-      await blogUpdateRef.current.blogUpdateHandler();
-      blogFormToggleRef.current.visibilityHandler();
-    } catch (e) {
-      console.log('Blog cannot be added', e);
-      notificationHandler(e.response.data.error);
-    }
+    dispatch(
+      createBlog(title, url, setUrl, setTitle, blogUpdateRef, blogFormToggleRef)
+    );
   };
 
   return (

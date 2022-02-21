@@ -1,19 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/actions';
 
-const Logout = ({ setUser, notificationHandler }) => {
-  const logout = () => {
-    try {
-      window.localStorage.setItem('loggedInUser', null);
-      setUser(null);
-      notificationHandler('Logged out user successfully');
-    } catch (error) {
-      notificationHandler('Some error occurred');
-      console.log('Log out error', error);
-    }
+const Logout = () => {
+  const dispatch = useDispatch();
+  const logoff = () => {
+    dispatch(logout());
   };
   return (
     <div>
-      <button id='logout-button' onClick={logout}>
+      <button id='logout-button' onClick={logoff}>
         Logout
       </button>
     </div>
