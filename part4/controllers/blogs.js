@@ -79,10 +79,30 @@ blogsRouter.put('/:id', async (request, response, next) => {
   );
   if (updatedBlog.likes === request.body.likes) {
     console.log('Record updated');
-    response.status(200).send('Updated Record');
+    response.status(200).send('Updated Record, liked');
   } else {
-    console.log('Error updating');
+    console.log('Error updating like');
     response.status(404).end();
+  }
+});
+
+blogsRouter.put('/comment/:id', async (request, response, next) => {
+  const toBeUpdated = await Blog.findById(request.params.id);
+  if (toBeUpdated) {
+    const newComments = [...toBeUpdated.comments, request.body.comment];
+    await toBeUpdated.updateOne(
+      { comments: newComments },
+      function (err, docs) {
+        if (err) {
+          console.log('Error updating comment');
+          response.status(404).end();
+        } else {
+          console.log('Updated User : ', docs);
+          console.log('Record updated');
+          response.status(200).send('Updated Record, comment inserted');
+        }
+      }
+    );
   }
 });
 

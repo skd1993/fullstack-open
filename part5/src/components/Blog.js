@@ -3,7 +3,7 @@ import BlogContent from './BlogContent';
 import { useDispatch, useSelector } from 'react-redux';
 import { showBlogs, deleteBlog } from '../redux/actions';
 
-const Blog = React.forwardRef((props, ref) => {
+const Blog = (props) => {
   // const [blogs, setBlogs] = useState([]);
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
@@ -17,7 +17,7 @@ const Blog = React.forwardRef((props, ref) => {
   };
 
   return blogs?.length > 0 ? (
-    <div id='blog-list'>
+    <div>
       {
         blogs
           .sort((a, b) => b.likes - a.likes)
@@ -26,6 +26,7 @@ const Blog = React.forwardRef((props, ref) => {
               index={index}
               blog={blog}
               removeBlogHandler={removeBlogHandler}
+              key={blog.id}
             />
           ))
         // <div key={blog.id} style={{border: "1px solid black", padding: "10px"}} class={"blogContainer"}>
@@ -45,6 +46,6 @@ const Blog = React.forwardRef((props, ref) => {
   ) : (
     <p>No blogs found</p>
   );
-});
+};
 
 export default Blog;

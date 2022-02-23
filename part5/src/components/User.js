@@ -27,7 +27,7 @@ const UserList = () => {
         {blogList
           .filter((b) => b.user.id === id)
           .map((x) => (
-            <li>{x.title}</li>
+            <li key={x.id}>{x.title}</li>
           ))}
       </ul>
     </div>

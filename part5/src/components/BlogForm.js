@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBlog } from '../redux/actions';
+import { Input, Button, Heading, Box, FormLabel } from '@chakra-ui/react';
 
-const BlogForm = ({ blogFormToggleRef, blogUpdateRef }) => {
+const BlogForm = ({ blogFormToggleRef }) => {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
 
@@ -18,40 +19,40 @@ const BlogForm = ({ blogFormToggleRef, blogUpdateRef }) => {
 
   const blogSubmitHandler = async (event) => {
     event.preventDefault();
-    dispatch(
-      createBlog(title, url, setUrl, setTitle, blogUpdateRef, blogFormToggleRef)
-    );
+    dispatch(createBlog(title, url, setUrl, setTitle, blogFormToggleRef));
   };
 
   return (
     <div>
       <form onSubmit={blogSubmitHandler}>
-        <h1>Create new blog</h1>
-        <div>
-          <label htmlFor={'title'}>Title: </label>
-          <input
+        <Heading size={'xs'} mb={2}>Create new blog</Heading>
+        <Box mb={2}>
+          {/* <FormLabel htmlFor={'title'}>Title: </FormLabel> */}
+          <Input
             type={'text'}
             name={'title'}
-            placeholder={'title of blog post'}
+            placeholder={'Title of blog post'}
             onChange={changeHandler}
             value={title}
             id={'title'}
           />
-        </div>
-        <div>
-          <label htmlFor={'url'}>URL: </label>
-          <input
+        </Box>
+        <Box mb={2}>
+          {/* <FormLabel htmlFor={'url'}>URL: </FormLabel> */}
+          <Input
             type={'text'}
             name={'url'}
-            placeholder={'url of blog post'}
+            placeholder={'URL of blog post'}
             onChange={changeHandler}
             value={url}
             id={'url'}
           />
-        </div>
-        <button type={'submit'} id='create-note'>
-          {buttonName}
-        </button>
+        </Box>
+        <Box mb={2}>
+          <Button type={'submit'} id='create-note' isFullWidth={true} colorScheme='blue'>
+            {buttonName}
+          </Button>
+        </Box>
       </form>
     </div>
   );

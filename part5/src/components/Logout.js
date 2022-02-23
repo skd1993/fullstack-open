@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/actions';
 import { useNavigate } from 'react-router-dom';
+import {Button} from '@chakra-ui/react'
 
 const Logout = () => {
   const dispatch = useDispatch();
@@ -14,9 +15,9 @@ const Logout = () => {
   
   return (
     <div>
-      <button id='logout-button' onClick={logoff}>
+      <Button id='logout-button' onClick={logoff} colorScheme='blue' size='sm'>
         Logout
-      </button>
+      </Button>
     </div>
   );
 };

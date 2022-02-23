@@ -10,6 +10,8 @@ export const blogsReducer = (state = blogsInitialState, action) => {
       return [...state, action.payload];
     case ACTIONS.LIKE_BLOG:
       return state;
+    case ACTIONS.COMMENT:
+      return state;
     case ACTIONS.DELETE_BLOG:
       return state;
     case ACTIONS.UNLOAD_BLOGS:

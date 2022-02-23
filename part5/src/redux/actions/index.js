@@ -61,7 +61,6 @@ export const createBlog = (
   url,
   setUrl,
   setTitle,
-  blogUpdateRef,
   blogFormToggleRef
 ) => {
   return async (dispatch) => {
@@ -71,7 +70,6 @@ export const createBlog = (
       dispatch(notificationHandler(`Blog added successfully: ${res.title}`));
       setUrl('');
       setTitle('');
-      await blogUpdateRef.current.blogUpdateHandler();
       blogFormToggleRef.current.visibilityHandler();
     } catch (e) {
       console.log('Blog cannot be added', e);
@@ -89,6 +87,22 @@ export const like = (blogId, likes) => {
       dispatch(notificationHandler(response));
       dispatch(showBlogs());
       dispatch(likeBlog());
+    } catch (e) {
+      console.log(e);
+      dispatch(notificationHandler(e.response.data));
+    }
+  };
+};
+
+export const comment = (blogId, commentStr) => {
+  return async (dispatch) => {
+    try {
+      const response = await blogService.addComment(blogId, {
+        comment: commentStr,
+      });
+      dispatch(notificationHandler(response));
+      dispatch(showBlogs());
+      dispatch(addComment());
     } catch (e) {
       console.log(e);
       dispatch(notificationHandler(e.response.data));
@@ -128,6 +142,12 @@ const newBlog = (blog) => {
 const likeBlog = () => {
   return {
     type: ACTIONS.LIKE_BLOG,
+  };
+};
+
+const addComment = () => {
+  return {
+    type: ACTIONS.COMMENT,
   };
 };
 

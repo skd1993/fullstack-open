@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 // import Togglable from './Togglable';
+import { Box, Heading, Text } from '@chakra-ui/react';
 
 const BlogContent = ({
   blog,
@@ -8,12 +9,13 @@ const BlogContent = ({
   index,
 }) => {
   return (
-    <div key={blog.id} style={{ border: '1px solid black', padding: '10px' }}>
+    <Link to={`/blogs/${blog.id}`}>
+    <Box key={blog.id} borderWidth='1px' borderRadius='lg' p={4} mb={3}>
       <div className={'blogTitle'}>
-        <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        </span>{' '}
-        <p>by {blog.author}</p>
+        <Heading size='md'>
+          {blog.title}
+        </Heading>
+        <Text fontSize='sm' color='gray'>by {blog.author}</Text>
       </div>
       {/* <Togglable buttonName={'View'} cancelButtonName={'Hide'}>
         <div className={'blogDetails'}>
@@ -32,7 +34,8 @@ const BlogContent = ({
           </button>
         </div>
       </Togglable> */}
-    </div>
+    </Box>
+    </Link>
   );
 };
 

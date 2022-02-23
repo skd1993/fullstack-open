@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 
 import Blog from './components/Blog';
 import Login from './components/Login';
@@ -15,20 +15,20 @@ import {
   Route,
   Routes,
   Navigate,
-  Link,
 } from 'react-router-dom';
 import BlogView from './components/BlogView';
+
+import NavBar from './components/chakra/NavBar';
+import { Container, Heading, Box } from '@chakra-ui/react';
 
 const App = () => {
   // const [user, setUser] = useState(null);
   // const [notification, setNotification] = useState(null)
   const user = useSelector((state) => state.user);
-  console.log('Current user', user);
 
   const dispatch = useDispatch();
 
   const blogFormToggleRef = useRef(null);
-  const blogListRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -42,37 +42,24 @@ const App = () => {
     }
   }, [dispatch]);
 
-  const Nav = () => {
-    return (
-      <nav>
-        <ul>
-          <Link to='/'>blogs</Link>
-          <Link to='/users'>users</Link>
-          <Link to='#'>
-            {user.name} logged in <Logout />
-          </Link>
-        </ul>
-      </nav>
-    );
-  };
-
   const Home = () => {
     return (
-      <div>
-        <h1>Blogs</h1>
-        <Togglable
-          buttonName={'Create new Blog'}
-          cancelButtonName={'Cancel'}
-          ref={blogFormToggleRef}
-        >
-          <BlogForm
-            blogFormToggleRef={blogFormToggleRef}
-            blogUpdateRef={blogListRef}
-          />
-        </Togglable>
-        <br />
-        <Blog ref={blogListRef} />
-      </div>
+      <Fragment>
+        <Box mb={4}>
+          <Heading mb={2}>Blogs</Heading>
+          <Togglable
+            buttonName={'Create new Blog'}
+            cancelButtonName={'Cancel'}
+            ref={blogFormToggleRef}
+          >
+            <BlogForm
+              blogFormToggleRef={blogFormToggleRef}
+              // blogUpdateRef={blogListRef}
+            />
+          </Togglable>
+        </Box>
+        <Blog />
+      </Fragment>
     );
   };
 
@@ -81,15 +68,17 @@ const App = () => {
     if (loggedIn)
       return (
         <div>
-          <Nav />
-          <Notification />
-          <Routes>
-            <Route exact path='/' element={<Home />} />
-            <Route exact path='/users' element={<UserList />} />
-            <Route path='/users/:id' element={<User />} />
-            <Route path='/blogs/:id' element={<BlogView />} />
-            <Route path='*' element={<Navigate to='/' />} />
-          </Routes>
+          <NavBar user={user.name} />
+          <Container maxW='10xl' mb={4} pt={120}>
+            <Notification />
+            <Routes>
+              <Route exact path='/' element={<Home />} />
+              <Route exact path='/users' element={<UserList />} />
+              <Route path='/users/:id' element={<User />} />
+              <Route path='/blogs/:id' element={<BlogView />} />
+              <Route path='*' element={<Navigate to='/' />} />
+            </Routes>
+          </Container>
         </div>
       );
     else

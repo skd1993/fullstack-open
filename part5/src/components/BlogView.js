@@ -1,22 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import blogService from '../services/blogs';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { like } from '../redux/actions';
+import { like, comment } from '../redux/actions';
 
 const BlogView = () => {
   const id = useParams().id;
   const dispatch = useDispatch();
   const [blog, setBlog] = useState();
+  const commentRef = useRef();
 
   const fetchBlog = async () => {
     const res = await blogService.getBlogInfo(id);
-    console.log(res);
+    // console.log(res);
     setBlog(res);
   };
 
-  const likesIncrementHandler = async (blogId, likes) => {
+  const likesIncrementHandler = (blogId, likes) => {
     dispatch(like(blogId, likes));
+    fetchBlog();
+  };
+
+  const commentSubmitHandler = (blogId) => {
+    dispatch(comment(blogId, commentRef.current.value));
+    commentRef.current.value = '';
     fetchBlog();
   };
 
@@ -37,6 +44,24 @@ const BlogView = () => {
         </button>
       </p>
       <p>added by {blog.author}</p>
+      <div>
+        <h2>comments</h2>
+        <input
+          placeholder='insert comment here'
+          name='comment'
+          ref={commentRef}
+        />
+        <button onClick={() => commentSubmitHandler(blog.id)}>Submit</button>
+        {!blog.comments || blog.comments.length === 0 ? (
+          <p>No comments yet ...</p>
+        ) : (
+          <ul>
+            {blog?.comments.map((c, idx) => (
+              <li key={idx}>{c}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   ) : (
     <p>Not found</p>
