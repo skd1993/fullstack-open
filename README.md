@@ -32,9 +32,9 @@ https://github.com/skd1993/fullstack-open/commits/master/part6
 
 ## Part 7
 
-https://github.com/skd1993/fullstack-open/commits/master/part7
-https://github.com/skd1993/fullstack-open/commit/b3d8adce957494216d0a73917f6fddb1436d833c
-https://github.com/skd1993/fullstack-open/commit/8263d8a89d053accdc66d540f8d83cb2ecd325ee
-https://github.com/skd1993/fullstack-open/commit/9137533d8d686ba52faad4bd3625131e89aad1cc
+* https://github.com/skd1993/fullstack-open/commits/master/part7
+* https://github.com/skd1993/fullstack-open/commit/b3d8adce957494216d0a73917f6fddb1436d833c
+* https://github.com/skd1993/fullstack-open/commit/8263d8a89d053accdc66d540f8d83cb2ecd325ee
+* https://github.com/skd1993/fullstack-open/commit/9137533d8d686ba52faad4bd3625131e89aad1cc
 
 ## Part 8
