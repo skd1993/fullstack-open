@@ -161,13 +161,11 @@ const resolvers = {
       return toBeAdded;
     },
     editAuthor: (root, args) => {
-      const toBeEdited = authors.findIndex(
-        (author) => author.name === args.name
-      );
-      if (toBeEdited > -1) {
+      const toBeEdited = authors.find((author) => author.name === args.name);
+      if (toBeEdited) {
         authors[toBeEdited].born = args.setBornTo;
-      }
-      return authors[toBeEdited];
+        return authors[toBeEdited];
+      } else return null;
     },
   },
 };
