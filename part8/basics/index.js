@@ -161,11 +161,15 @@ const resolvers = {
       return toBeAdded;
     },
     editAuthor: (root, args) => {
-      const toBeEdited = authors.find((author) => author.name === args.name);
-      if (toBeEdited) {
-        authors[toBeEdited].born = args.setBornTo;
-        return authors[toBeEdited];
-      } else return null;
+      let toBeEdited = null;
+      authors.map((author) => {
+        if (author.name === args.name) {
+          author.born = args.setBornTo;
+          toBeEdited = author;
+        } else return null;
+      });
+      if (toBeEdited) return toBeEdited;
+      else return null;
     },
   },
 };
