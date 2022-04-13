@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../apollo/queries';
+import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS, GENRES } from '../apollo/queries';
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [published, setPublished] = useState();
+  const [published, setPublished] = useState('');
   const [genre, setGenre] = useState('');
   const [genres, setGenres] = useState([]);
 
   const [createBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+    refetchQueries: [
+      { query: ALL_AUTHORS },
+      { query: ALL_BOOKS },
+      { query: GENRES },
+    ],
   });
 
   if (!props.show) {
@@ -20,15 +24,19 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    console.log('add book...');
+    try {
+      await createBook({ variables: { title, author, published, genres } });
+      props.showMessage('book added');
+      props.setPage('books');
+    } catch (error) {
+      props.showMessage(error.message);
+    }
 
-    await createBook({ variables: { title, author, published, genres } });
-
-    setTitle('');
-    setPublished();
-    setAuthor('');
-    setGenres([]);
-    setGenre('');
+    // setTitle('');
+    // setPublished('');
+    // setAuthor('');
+    // setGenres([]);
+    // setGenre('');
   };
 
   const addGenre = () => {

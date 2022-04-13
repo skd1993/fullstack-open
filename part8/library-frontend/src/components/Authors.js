@@ -25,10 +25,14 @@ const Authors = (props) => {
     e.preventDefault();
 
     console.log(nameInp, bornInp.current.value);
-
-    await updateAuthor({
-      variables: { name: nameInp, setBornTo: +bornInp.current.value },
-    });
+    try {
+      await updateAuthor({
+        variables: { name: nameInp, setBornTo: +bornInp.current.value },
+      });
+      props.showMessage('updated author');
+    } catch (error) {
+      props.showMessage(error.message);
+    }
 
     setNameInp('');
     bornInp.current.value = '';
@@ -46,8 +50,8 @@ const Authors = (props) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {authors.data.allAuthors.map((a) => (
-            <tr key={a.name}>
+          {authors.data?.allAuthors.map((a) => (
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born || 'N/A'}</td>
               <td>{a.bookCount}</td>
@@ -56,21 +60,21 @@ const Authors = (props) => {
         </tbody>
       </table>
       <h2>Set birthyear</h2>
-      <div>
+      <div> 
         <form onSubmit={submit}>
           <div>
-            <select onChange={selectAuthorHandler}>
-              <optgroup label='Select Author'>
-                <option disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
+            <select
+              defaultValue={' '}
+              onChange={selectAuthorHandler}
+            >
+              <option disabled value>
+                -- select an option --
+              </option>
+              {authors.data.allAuthors.map((a) => (
+                <option value={a.name} key={a.id} required>
+                  {a.name}
                 </option>
-                {authors.data.allAuthors.map((a) => (
-                  <option value={a.name} key={a.id} required>
-                    {a.name}
-                  </option>
-                ))}
-              </optgroup>
+              ))}
             </select>
           </div>
           <div>
