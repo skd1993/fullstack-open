@@ -4,6 +4,9 @@ const { Book, Author, User } = require('./schema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const { PubSub } = require('graphql-subscriptions');
+const pubsub = new PubSub();
+
 module.exports = {
   Query: {
     bookCount: async () => await Book.collection.countDocuments(),
@@ -119,7 +122,9 @@ module.exports = {
           ...args,
           author: isExisting.id,
         }).populate('author', { name: 1, id: 1, born: 1, bookCount: 1 });
-        return bookToAdd.save();
+        await bookToAdd.save();
+        pubsub.publish('BOOK_ADDED', { bookAdded: bookToAdd });
+        return bookToAdd;
       } catch (error) {
         throw new UserInputError(error.message, {
           inValidArgs: args,
@@ -181,6 +186,11 @@ module.exports = {
       };
       const token = jwt.sign(userForToken, process.env.SECRET);
       return { value: token };
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED']),
     },
   },
 };

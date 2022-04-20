@@ -46,4 +46,7 @@ module.exports = gql`
     ): User
     login(username: String!, password: String!): Token
   }
+  type Subscription {
+    bookAdded: Book!
+  }
 `;
