@@ -32,11 +32,11 @@ const NewBook = (props) => {
       props.showMessage(error.message);
     }
 
-    // setTitle('');
-    // setPublished('');
-    // setAuthor('');
-    // setGenres([]);
-    // setGenre('');
+    setTitle('');
+    setPublished('');
+    setAuthor('');
+    setGenres([]);
+    setGenre('');
   };
 
   const addGenre = () => {

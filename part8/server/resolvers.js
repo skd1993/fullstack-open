@@ -53,7 +53,7 @@ module.exports = {
           bookCount: 1,
         });
       }
-    },
+    },  
     allAuthors: async () => await Author.find({}),
     me: (root, args, context) => {
       const currentUser = context.currentUser;

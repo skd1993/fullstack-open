@@ -27,6 +27,8 @@ mongoose
   .catch((error) => {
     console.log('cannot connect to mongodb', error.message);
   });
+  
+mongoose.set('debug', true);
 
 const start = async () => {
   const app = express();

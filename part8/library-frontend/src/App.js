@@ -4,7 +4,9 @@ import Books from './components/Books';
 import NewBook from './components/NewBook';
 import Login from './components/Login';
 import Recommendations from './components/Recommendations';
-import { useApolloClient, useLazyQuery } from '@apollo/client';
+import { useApolloClient, useSubscription } from '@apollo/client';
+import { ALL_BOOKS, BOOK_ADDED } from './apollo/queries';
+import { updateCache } from './apollo/updateCache';
 
 const App = () => {
   const [page, setPage] = useState('authors');
@@ -24,6 +26,16 @@ const App = () => {
       setMessage(null);
     }, 3000);
   };
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData);
+      const addedBook = subscriptionData.data.bookAdded;
+      showMessage(`${addedBook.title} has been added`);
+      alert(`${addedBook.title} has been added`);
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+    },
+  });
 
   const setAuthenticated = (tokenVal) => {
     setToken(tokenVal);

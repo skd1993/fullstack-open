@@ -27,6 +27,12 @@ const authorSchema = new mongoose.Schema({
   born: {
     type: Number,
   },
+  bookCount: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Book',
+    },
+  ],
 });
 
 const userSchema = new mongoose.Schema({
