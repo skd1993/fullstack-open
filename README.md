@@ -38,3 +38,5 @@ https://github.com/skd1993/fullstack-open/commits/master/part6
 * https://github.com/skd1993/fullstack-open/commit/9137533d8d686ba52faad4bd3625131e89aad1cc
 
 ## Part 8
+
+https://github.com/skd1993/fullstack-open/tree/master/part8
