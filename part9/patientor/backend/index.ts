@@ -1,5 +1,5 @@
 import express from 'express';
-import {addPatientRouter, diagnosesRouter, patientsRouter} from "./routes";
+import {addPatientRouter, diagnosesRouter, patientInfoRouter, patientsRouter} from "./routes";
 const app = express();
 
 app.use(express.json());
@@ -12,6 +12,7 @@ app.get('/api/ping', (_req, res) => {
 app.get('/api/diagnoses', diagnosesRouter);
 app.get('/api/patients', patientsRouter);
 app.post('/api/patients', addPatientRouter);
+app.get('/api/patients/:id', patientInfoRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {

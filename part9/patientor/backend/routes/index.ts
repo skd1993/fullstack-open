@@ -28,3 +28,22 @@ export const addPatientRouter = (req: Request, res: Response): void => {
         res.status(400).send(errorMessage);
     }
 };
+
+export const patientInfoRouter = (req: Request, res: Response) => {
+    try {
+        const find: Patient | undefined = services.getPatientById(req.params.id);
+        if(find) {
+            res.status(200).send(find);
+        }
+        else {
+            throw new Error(`patient with id: ${req.params.id} not found`);
+        }
+    }
+    catch(error: unknown) {
+        let errorMessage = 'Something went wrong.';
+        if (error instanceof Error) {
+            errorMessage += ' Error: ' + error.message;
+        }
+        res.status(400).send(errorMessage);
+    }
+};
